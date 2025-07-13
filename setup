@@ -287,8 +287,8 @@ create_vm() {
     --onboot 0 --ostype other --sockets 1 --start 0 --tablet 1 \
     --vga vmware --vmgenid 1 --scsihw virtio-scsi-pci \
     --"$disk_type" "${storage}:${disk_size},cache=none,discard=on" \
-    --ide0 "local:iso/opencore-osx-proxmox-vm.iso,media=cdrom,cache=unsafe,size=96M" \
-    --ide2 "local:iso/recovery-${version_name,,}.iso,media=cdrom,cache=unsafe,size=${iso_size}" >>"$logfile" 2>&1 || log_and_exit "Failed to create VM" "$logfile"
+    --ide0 "${storage}:iso/opencore-osx-proxmox-vm.iso,media=cdrom,cache=unsafe,size=96M" \
+    --ide2 "${storage}:iso/recovery-${version_name,,}.iso,media=cdrom,cache=unsafe,size=${iso_size}" >>"$logfile" 2>&1 || log_and_exit "Failed to create VM" "$logfile"
   sed -i 's/media=cdrom/media=disk/' "/etc/pve/qemu-server/$vm_id.conf" >>"$logfile" 2>&1 || log_and_exit "Failed to update VM config" "$logfile"
 
   echo "VM ($vm_name) created successfully" | tee -a "$logfile"
